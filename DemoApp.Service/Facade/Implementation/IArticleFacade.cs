@@ -6,6 +6,6 @@ namespace DemoApp.Service.Facade
 {
     public interface IArticleFacade
     {
-        Task<List<Post>> FetchPostsFromApiAsync();
+        Task<List<UserPost>> FetchPostsFromApiAsync();
     }
 }

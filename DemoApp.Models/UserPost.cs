@@ -1,6 +1,6 @@
 ﻿namespace DemoApp.Models
 {
-    public class Post
+    public class UserPost
     {
         public int UserId { get; set; }
         public int Id { get; set; }

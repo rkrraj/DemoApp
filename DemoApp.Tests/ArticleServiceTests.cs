@@ -30,11 +30,11 @@ namespace DemoApp.Tests
         public async Task ProcessUserPostAsync_ShouldLogInformation_WhenPostsAreProcessed()
         {
             // Arrange
-            var posts = new List<Post>
+            var posts = new List<UserPost>
         {
-            new Post { UserId = 1, Id = 1, Title = "Title1", Body = "Body1" },
-            new Post { UserId = 1, Id = 2, Title = "Title2", Body = "Body2" },
-            new Post { UserId = 2, Id = 3, Title = "Title3", Body = "Body2" }
+            new UserPost { UserId = 1, Id = 1, Title = "Title1", Body = "Body1" },
+            new UserPost { UserId = 1, Id = 2, Title = "Title2", Body = "Body2" },
+            new UserPost { UserId = 2, Id = 3, Title = "Title3", Body = "Body2" }
         };
             _mockArticleFacade.Setup(x => x.FetchPostsFromApiAsync())
             .ReturnsAsync(posts);

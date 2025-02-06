@@ -35,6 +35,7 @@ builder.Services.AddTransient<IArticleService, ArticleService>(sp =>
 
     return new ArticleService(tableClient, articleFacade, logger); // Inject the TableClient
 });
-builder.Services.AddTransient<IHttpProxy, HttpProxy>();
+builder.Services.AddTransient<IApiClient, ApiClient>();
 builder.Services.AddTransient<IArticleFacade, ArticleFacade>();
+
 builder.Build().Run();
