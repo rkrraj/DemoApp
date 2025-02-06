@@ -22,7 +22,6 @@ namespace DemoApp.Service
         }
         public async Task<string> ProcessUserPostAsync()
         {
-            await _tableClient.CreateIfNotExistsAsync(); // Create table if it doesn't exist (do this once)
             var posts = await _articleFacade.FetchPostsFromApiAsync();
             var statusMessage = string.Empty;
             if (posts == null || posts.Count == 0) return statusMessage = "There is no posts found to process";
