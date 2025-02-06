@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoApp.Functions", "DemoAp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoApp.Tests", "DemoApp.Tests\DemoApp.Tests.csproj", "{CF9E72E7-EDB8-44D1-A923-FCF9A239A8C1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoApp.DependencyInjection", "DemoApp.DependencyInjection\DemoApp.DependencyInjection.csproj", "{B938B7EB-4F46-400D-B57B-7B59EE27D177}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{CF9E72E7-EDB8-44D1-A923-FCF9A239A8C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF9E72E7-EDB8-44D1-A923-FCF9A239A8C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF9E72E7-EDB8-44D1-A923-FCF9A239A8C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B938B7EB-4F46-400D-B57B-7B59EE27D177}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B938B7EB-4F46-400D-B57B-7B59EE27D177}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B938B7EB-4F46-400D-B57B-7B59EE27D177}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B938B7EB-4F46-400D-B57B-7B59EE27D177}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
