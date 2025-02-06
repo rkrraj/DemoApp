@@ -1,7 +1,7 @@
 using Azure.Data.Tables;
-using DemoApp.Service;
 using DemoApp.Service.Facade;
 using DemoApp.Service.Proxy;
+using DemoApp.Service;
 using Microsoft.Azure.Functions.Worker.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

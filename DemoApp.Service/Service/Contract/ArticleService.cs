@@ -1,12 +1,10 @@
 ﻿using Azure.Data.Tables;
 using DemoApp.Models;
 using DemoApp.Service.Facade;
-using DemoApp.Service.Proxy;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace DemoApp.Service
