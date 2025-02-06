@@ -33,7 +33,7 @@ namespace DemoApp.Service
             return statusMessage;
         }
 
-        private async Task<(int storedCount, int skippedCount)> StorePostsAsync(List<Post> posts)
+        private async Task<(int storedCount, int skippedCount)> StorePostsAsync(List<UserPost> posts)
         {
             int storedCount = 0;
             int skippedCount = 0;

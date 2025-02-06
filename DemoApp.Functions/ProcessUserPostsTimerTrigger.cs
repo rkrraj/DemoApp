@@ -4,12 +4,12 @@ using Microsoft.Extensions.Logging;
 
 namespace DemoApp.Functions
 {
-    public class ProcessPosts
+    public class ProcessUserPostsTimerTrigger
     {
-        private readonly ILogger<ProcessPosts> _logger;
+        private readonly ILogger<ProcessUserPostsTimerTrigger> _logger;
         private readonly IArticleService _articleService;
 
-        public ProcessPosts(ILogger<ProcessPosts> logger, IArticleService articleService)
+        public ProcessUserPostsTimerTrigger(ILogger<ProcessUserPostsTimerTrigger> logger, IArticleService articleService)
         {
             _logger = logger;
             _articleService = articleService;

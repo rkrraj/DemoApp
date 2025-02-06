@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace DemoApp.Service.Proxy
 {
-    public class HttpProxy : IHttpProxy
+    public class ApiClient : IApiClient
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly ILogger<HttpProxy> _logger;
-        public HttpProxy(IHttpClientFactory httpClientFactory, ILogger<HttpProxy> logger)
+        private readonly ILogger<ApiClient> _logger;
+        public ApiClient(IHttpClientFactory httpClientFactory, ILogger<ApiClient> logger)
         {
             _httpClientFactory = httpClientFactory;
             _logger = logger;

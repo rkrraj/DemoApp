@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace DemoApp.Service.Proxy
 {
-    public interface IHttpProxy
+    public interface IApiClient
     {
         Task<T> SendAsync<T>(HttpMethod method, string apiUrl, object data = null) where T : class;
         Task<T> GetAsync<T>(string apiUrl) where T : class;
