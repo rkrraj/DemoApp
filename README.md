@@ -8,7 +8,6 @@ This Azure Function processes data from an external API and stores it in Azure S
     *   Visual Studio 2022(Update to latest available version) or later (optional). 
     *   Make sure .NET SDK 8.0 runtime is installed
     *   Install Azure Functions Core Tools using Visual Studio 2022 Developer Command Prompt. You can install it using npm install -g azure-functions-core-tools@latest --unsafe-perm true
-    *   Install Azurite (for local development). You can install it using npm: 'npm install -g azurite'
     *   Install Azure Storage Explorer. Download it from [https://azure.microsoft.com/en-us/products/storage/storage-explorer#Download-4]    
     
 2.  **Clone the repository (or extract the ZIP file):**
@@ -26,13 +25,8 @@ This Azure Function processes data from an external API and stores it in Azure S
         "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated"
         }
     }
-    
+    '''
     ***Important:** For local development, use '"UseDevelopmentStorage=true"'.  If you want to connect to a real Azure Storage account, replace it with your connection string.  Never commit real connection strings to your repository.
-
-4.  **Run Azurite (for local development):**
-
-    azurite --location %USERPROFILE%\.azurite --debug log.txt
-    Keep this command prompt window open.
 
 5.  **Run the Azure Function:**
 
