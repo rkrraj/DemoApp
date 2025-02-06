@@ -24,20 +24,12 @@ namespace DemoApp.Service
         public async Task ProcessUserPostAsync()
         {
             await _tableClient.CreateIfNotExistsAsync(); // Create table if it doesn't exist (do this once)
-            try
-            {
-                var posts = await FetchPostsFromApi();
-                if (posts == null || posts.Count == 0) return; // Early exit if no posts
+            var posts = await FetchPostsFromApi();
+            if (posts == null || posts.Count == 0) return; // Early exit if no posts
 
-                var (storedCount, skippedCount) = await StorePosts(posts);
-                var successMessage = $"Successfully processed posts. Total: {posts.Count}, filteredPosts:{storedCount + skippedCount}, Stored: {storedCount}, Skipped: {skippedCount}";
-                _log.LogInformation(successMessage);
-
-            }
-            catch (Exception ex)
-            {
-                _log.LogError(ex, "An error occurred in the function.");
-            }
+            var (storedCount, skippedCount) = await StorePosts(posts);
+            var successMessage = $"Successfully processed posts. Total: {posts.Count}, filteredPosts:{storedCount + skippedCount}, Stored: {storedCount}, Skipped: {skippedCount}";
+            _log.LogInformation(successMessage);
         }
 
         private async Task<List<Post>> FetchPostsFromApi()
@@ -62,37 +54,30 @@ namespace DemoApp.Service
 
             foreach (var post in filteredPosts)
             {
+                post.Title = post.Title.ToUpper();
+                var entity = new PostEntity
+                {
+                    PartitionKey = "posts",
+                    RowKey = post.Id.ToString(),
+                    UserId = post.UserId,
+                    Id = post.Id,
+                    Title = post.Title,
+                    Body = post.Body,
+                    Timestamp = DateTimeOffset.UtcNow
+                };
+
                 try
                 {
-                    post.Title = post.Title.ToUpper();
-
-                    var entity = new PostEntity
-                    {
-                        PartitionKey = "posts",
-                        RowKey = post.Id.ToString(),
-                        UserId = post.UserId,
-                        Id = post.Id,
-                        Title = post.Title,
-                        Body = post.Body,
-                        Timestamp = DateTimeOffset.UtcNow
-                    };
-
-                    try
-                    {
-                        await _tableClient.UpsertEntityAsync(entity);
-                        _log.LogInformation("Upserted post with Id: {postId}", post.Id);
-                        storedCount++;
-                    }
-                    catch (Exception ex) // Other exceptions during insert
-                    {
-                        _log.LogError(ex, $"Error inserting post with Id: {post.Id}");
-                        skippedCount++;
-                    }
+                    await _tableClient.UpsertEntityAsync(entity);
+                    _log.LogInformation("Upserted post with Id: {postId}", post.Id);
+                    storedCount++;
                 }
-                catch (Exception ex) // Exceptions during post processing
+                catch (Exception ex) // Other exceptions during insert
                 {
-                    _log.LogError(ex, $"Error processing post with Id: {post.Id}");
+                    _log.LogError(ex, $"Error inserting post with Id: {post.Id}");
+                    skippedCount++;
                 }
+
             }
             return (storedCount, skippedCount); // Return counts as a tuple
         }
