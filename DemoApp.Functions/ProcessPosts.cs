@@ -16,7 +16,7 @@ namespace DemoApp.Functions
         }
 
         [Function("Function1")]
-        public async Task Run([TimerTrigger("0 */1 * * * *")] TimerInfo myTimer)
+        public async Task Run([TimerTrigger("0 */10 * * * *")] TimerInfo myTimer)
         {
             _logger.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
             await _blogPostService.ProcessUserPostAsync();
