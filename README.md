@@ -17,7 +17,7 @@ This Azure Function processes data from an external API and stores it in Azure S
     *   Create a 'local.settings.json' file in the project directory if it doesn't exist.
     *   Add the following settings to 'local.settings.json' (replace placeholders with appropriate values):
 
-    '''json
+   
     {
     "IsEncrypted": false,
     "Values": {
@@ -25,7 +25,7 @@ This Azure Function processes data from an external API and stores it in Azure S
         "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated"
         }
     }
-    '''
+    
     ***Important:** For local development, use '"UseDevelopmentStorage=true"'.  If you want to connect to a real Azure Storage account, replace it with your connection string.  Never commit real connection strings to your repository.
 
 5.  **Run the Azure Function:**
