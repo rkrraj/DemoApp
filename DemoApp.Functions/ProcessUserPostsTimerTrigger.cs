@@ -22,10 +22,6 @@ namespace DemoApp.Functions
             var status = await _articleService.ProcessUserPostAsync();
             _logger.LogInformation(status);
 
-            if (myTimer.ScheduleStatus is not null)
-            {
-                _logger.LogInformation($"Next timer schedule at: {myTimer.ScheduleStatus.Next}");
-            }
         }
     }
 }
