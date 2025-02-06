@@ -1,5 +1,6 @@
 ﻿using Azure.Data.Tables;
 using DemoApp.Models;
+using DemoApp.Service.Facade;
 using DemoApp.Service.Proxy;
 using Microsoft.Extensions.Logging;
 using System;
@@ -10,42 +11,29 @@ using System.Threading.Tasks;
 
 namespace DemoApp.Service
 {
-    public class UserPostService : IUserPostService
+    public class ArticleService : IArticleService
     {
-        private readonly IHttpProxy _httpProxy;
         private readonly TableClient _tableClient;
-        private readonly ILogger<UserPostService> _log;
-        public UserPostService(IHttpProxy httpProxy, TableClient tableClient, ILogger<UserPostService> log)
+        private readonly ILogger<ArticleService> _logger;
+        private readonly IArticleFacade _articleFacade;
+        public ArticleService(TableClient tableClient, IArticleFacade articleFacade, ILogger<ArticleService> logger)
         {
-            _httpProxy = httpProxy;
+            _articleFacade = articleFacade;
             _tableClient = tableClient;
-            _log = log;
+            _logger = logger;
         }
-        public async Task ProcessUserPostAsync()
+        public async Task<string> ProcessUserPostAsync()
         {
             await _tableClient.CreateIfNotExistsAsync(); // Create table if it doesn't exist (do this once)
-            var posts = await FetchPostsFromApi();
-            if (posts == null || posts.Count == 0) return; // Early exit if no posts
-
-            var (storedCount, skippedCount) = await StorePosts(posts);
-            var successMessage = $"Successfully processed posts. Total: {posts.Count}, filteredPosts:{storedCount + skippedCount}, Stored: {storedCount}, Skipped: {skippedCount}";
-            _log.LogInformation(successMessage);
+            var posts = await _articleFacade.FetchPostsFromApiAsync();
+            var statusMessage = string.Empty;
+            if (posts == null || posts.Count == 0) return statusMessage = "There is no posts found to process";
+            var (storedCount, skippedCount) = await StorePostsAsync(posts);
+            statusMessage = $"Successfully processed posts. Total: {posts.Count}, filteredPosts:{storedCount + skippedCount}, Stored: {storedCount}, Skipped: {skippedCount}";
+            return statusMessage;
         }
 
-        private async Task<List<Post>> FetchPostsFromApi()
-        {
-            try
-            {
-                return await _httpProxy.GetAsync<List<Post>>("https://jsonplaceholder.typicode.com/posts");
-            }
-            catch (Exception ex)
-            {
-                _log.LogError(ex, "Error fetching posts from API.");
-                return null;
-            }
-        }
-
-        private async Task<(int storedCount, int skippedCount)> StorePosts(List<Post> posts)
+        private async Task<(int storedCount, int skippedCount)> StorePostsAsync(List<Post> posts)
         {
             int storedCount = 0;
             int skippedCount = 0;
@@ -69,12 +57,12 @@ namespace DemoApp.Service
                 try
                 {
                     await _tableClient.UpsertEntityAsync(entity);
-                    _log.LogInformation("Upserted post with Id: {postId}", post.Id);
+                    _logger.LogInformation("Upserted post with Id: {postId}", post.Id);
                     storedCount++;
                 }
                 catch (Exception ex) // Other exceptions during insert
                 {
-                    _log.LogError(ex, $"Error inserting post with Id: {post.Id}");
+                    _logger.LogError(ex, $"Error inserting post with Id: {post.Id}");
                     skippedCount++;
                 }
 

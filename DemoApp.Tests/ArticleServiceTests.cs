@@ -3,28 +3,27 @@ using Azure.Data.Tables;
 using Azure.Data.Tables.Models;
 using DemoApp.Models;
 using DemoApp.Service;
-using DemoApp.Service.Proxy;
+using DemoApp.Service.Facade;
 using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace DemoApp.Tests
 {
     [TestFixture]
-    public class UserPostServiceTests
+    public class ArticleServiceTests
     {
-        private Mock<IHttpProxy> _mockHttpProxy;
+        private Mock<IArticleFacade> _mockArticleFacade;
         private Mock<TableClient> _mockTableClient;
-        private Mock<ILogger<UserPostService>> _mockLogger;
-        private UserPostService _userPostService;
+        private Mock<ILogger<ArticleService>> _mockLogger;
+        private ArticleService _userPostService;
 
         [SetUp]
         public void SetUp()
         {
-            _mockHttpProxy = new Mock<IHttpProxy>();
+            _mockArticleFacade = new Mock<IArticleFacade>();
             _mockTableClient = new Mock<TableClient>();
-            _mockLogger = new Mock<ILogger<UserPostService>>();
-
-            _userPostService = new UserPostService(_mockHttpProxy.Object, _mockTableClient.Object, _mockLogger.Object);
+            _mockLogger = new Mock<ILogger<ArticleService>>();
+            _userPostService = new ArticleService(_mockTableClient.Object, _mockArticleFacade.Object, _mockLogger.Object);
         }
 
         [Test]
@@ -37,20 +36,21 @@ namespace DemoApp.Tests
             new Post { UserId = 1, Id = 2, Title = "Title2", Body = "Body2" },
             new Post { UserId = 2, Id = 3, Title = "Title3", Body = "Body2" }
         };
-            _mockHttpProxy.Setup(x => x.GetAsync<List<Post>>(It.IsAny<string>())).ReturnsAsync(posts);
+            _mockArticleFacade.Setup(x => x.FetchPostsFromApiAsync())
+            .ReturnsAsync(posts);
 
             var mockResponse = new Mock<Response>();
-            var tableItem = new TableItem("posts"); 
+            var tableItem = new TableItem("posts");
             var response = Response.FromValue(tableItem, mockResponse.Object);
-            var responseForUpsert = Task.FromResult(mockResponse.Object); 
+            var responseForUpsert = Task.FromResult(mockResponse.Object);
             _mockTableClient.Setup(x => x.CreateIfNotExistsAsync(It.IsAny<CancellationToken>()))
-                .ReturnsAsync(response); 
+                .ReturnsAsync(response);
             _mockTableClient.Setup(x => x.UpsertEntityAsync(It.IsAny<PostEntity>(), It.IsAny<TableUpdateMode>(), It.IsAny<CancellationToken>()))
     .Returns(responseForUpsert);
             // Act
-            await _userPostService.ProcessUserPostAsync();
+            var message = await _userPostService.ProcessUserPostAsync();
             // Assert
-            Assert.IsTrue(true);
+            Assert.IsTrue(message.Contains("filteredPosts:2"));
 
         }
     }

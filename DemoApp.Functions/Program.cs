@@ -1,5 +1,6 @@
 using Azure.Data.Tables;
 using DemoApp.Service;
+using DemoApp.Service.Facade;
 using DemoApp.Service.Proxy;
 using Microsoft.Azure.Functions.Worker.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,16 +25,16 @@ builder.Services.AddSingleton(sp =>
     return new TableServiceClient(storageConnectionString);
 });
 
-builder.Services.AddTransient<IUserPostService, UserPostService>(sp =>
+builder.Services.AddTransient<IArticleService, ArticleService>(sp =>
 {
-    var httpProxy = sp.GetRequiredService<IHttpProxy>();
+    var articleFacade = sp.GetRequiredService<IArticleFacade>();
     var tableServiceClient = sp.GetRequiredService<TableServiceClient>();
-    var logger = sp.GetRequiredService<ILogger<UserPostService>>();
+    var logger = sp.GetRequiredService<ILogger<ArticleService>>();
 
     var tableClient = tableServiceClient.GetTableClient("posts"); // Get the TableClient here
 
-    return new UserPostService(httpProxy, tableClient, logger); // Inject the TableClient
+    return new ArticleService(tableClient, articleFacade, logger); // Inject the TableClient
 });
 builder.Services.AddTransient<IHttpProxy, HttpProxy>();
-
+builder.Services.AddTransient<IArticleFacade, ArticleFacade>();
 builder.Build().Run();
