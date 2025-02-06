@@ -38,6 +38,7 @@ namespace DemoApp.Service.Proxy
             }
 
             var content = await response.Content.ReadAsStringAsync();
+            _logger.LogInformation($"API Response Content (first 200 chars): {content.Substring(0, Math.Min(content.Length, 200))}...");
             return DeserializeResponse<T>(content, apiUrl, method);
         }
 
