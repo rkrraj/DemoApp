@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace DemoApp.Service
+namespace DemoApp.Service.Service.Implementation
 {
     public interface IArticleService
     {

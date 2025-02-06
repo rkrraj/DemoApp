@@ -1,4 +1,4 @@
-using DemoApp.Service;
+using DemoApp.Service.Service.Implementation;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 

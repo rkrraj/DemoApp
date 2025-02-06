@@ -2,8 +2,8 @@ using Azure;
 using Azure.Data.Tables;
 using Azure.Data.Tables.Models;
 using DemoApp.Models;
-using DemoApp.Service;
 using DemoApp.Service.Facade;
+using DemoApp.Service.Service.Contract;
 using Microsoft.Extensions.Logging;
 using Moq;
 

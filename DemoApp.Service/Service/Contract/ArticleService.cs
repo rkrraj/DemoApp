@@ -2,6 +2,7 @@
 using DemoApp.Models;
 using DemoApp.Service.Facade;
 using DemoApp.Service.Proxy;
+using DemoApp.Service.Service.Implementation;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace DemoApp.Service
+namespace DemoApp.Service.Service.Contract
 {
     public class ArticleService : IArticleService
     {
